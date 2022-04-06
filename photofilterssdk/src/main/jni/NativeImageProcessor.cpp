@@ -320,7 +320,8 @@ static inline void releaseArray(JNIEnv *env, jintArray array1, jint *array2) {
 
 
 JNIEXPORT jintArray
-Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_applyRGBCurve(JNIEnv *env, jobject thiz,
+Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_applyRGBCurve(JNIEnv *env,
+                                                                                jclass thiz,
                                                                                 jintArray pixels, jintArray rgb,
                                                                                 jint width, jint height) {
     jint *pixelsBuff = getPointerArray(env, pixels);
@@ -333,7 +334,8 @@ Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_applyRGBCurve(
 }
 
 JNIEXPORT jintArray
-Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_applyChannelCurves(JNIEnv *env, jobject thiz,
+Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_applyChannelCurves(JNIEnv *env,
+                                                                                     jclass thiz,
                                                                                      jintArray pixels, jintArray r,
                                                                                      jintArray g, jintArray b,
                                                                                      jint width, jint height) {
@@ -351,7 +353,8 @@ Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_applyChannelCu
 }
 
 JNIEXPORT jintArray
-Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doBrightness(JNIEnv *env, jobject thiz,
+Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doBrightness(JNIEnv *env,
+                                                                               jclass thiz,
                                                                                jintArray pixels, jint value, jint width,
                                                                                jint height) {
     jint *pixelsBuff = getPointerArray(env, pixels);
@@ -362,7 +365,8 @@ Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doBrightness(J
 }
 
 JNIEXPORT jintArray
-Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doContrast(JNIEnv *env, jobject thiz,
+Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doContrast(JNIEnv *env,
+                                                                             jclass thiz,
                                                                              jintArray pixels, jfloat value, jint width,
                                                                              jint height) {
     jint *pixelsBuff = getPointerArray(env, pixels);
@@ -373,7 +377,8 @@ Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doContrast(JNI
 }
 
 JNIEXPORT jintArray
-Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doColorOverlay(JNIEnv *env, jobject thiz,
+Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doColorOverlay(JNIEnv *env,
+                                                                                 jclass thiz,
                                                                                  jintArray pixels, jint depth,
                                                                                  jfloat red, jfloat green, jfloat blue,
                                                                                  jint width, jint height) {
@@ -385,7 +390,8 @@ Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doColorOverlay
 }
 
 JNIEXPORT jintArray
-Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doSaturation(JNIEnv *env, jobject thiz,
+Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doSaturation(JNIEnv *env,
+                                                                               jclass thiz,
                                                                                jintArray pixels, float level,
                                                                                jint width, jint height) {
     jint *pixelsBuff = getPointerArray(env, pixels);
