@@ -1,11 +1,14 @@
 package com.zomato.photofilters.imageprocessors;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 /**
  * @author Varun on 29/06/15.
  */
 public final class ImageProcessor {
+    public static final String TAG = ImageProcessor.class.getCanonicalName();
+
     private ImageProcessor() {
     }
 
@@ -38,6 +41,7 @@ public final class ImageProcessor {
     public static Bitmap doBrightness(int value, Bitmap inputImage) {
         int width = inputImage.getWidth();
         int height = inputImage.getHeight();
+        Log.i(TAG, String.valueOf(width) + String.valueOf(height));
         int[] pixels = new int[width * height];
 
         inputImage.getPixels(pixels, 0, width, 0, 0, width, height);

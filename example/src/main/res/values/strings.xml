@@ -1,6 +1,12 @@
 <resources>
-    <string name="app_name">Filters</string>
+    <string name="app_name">Filters 2.0</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_filters">Filters</string>
+    <string name="title_Editor">Editor</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="upload_a_new_photo">Upload a new photo</string>
+    <string name="save_the_current_photo">Save the current photo</string>
 </resources>

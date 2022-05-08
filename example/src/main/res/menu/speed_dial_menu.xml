@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fab_upload"
+        android:icon="@drawable/ic_baseline_add_a_photo_24"
+        android:title="@string/upload_a_new_photo" />
+
+    <item
+        android:id="@+id/fab_save"
+        android:icon="@drawable/ic_baseline_save_24"
+        android:title="@string/save_the_current_photo" />
+</menu>
