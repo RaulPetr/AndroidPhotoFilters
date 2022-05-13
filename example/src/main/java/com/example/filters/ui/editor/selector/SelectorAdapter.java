@@ -1,11 +1,14 @@
-package com.example.filters;
+package com.example.filters.ui.editor.selector;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.filters.R;
 import com.nineoldandroids.view.ViewHelper;
 
 import java.util.List;
@@ -13,16 +16,16 @@ import java.util.List;
 /**
  * @author Varun on 01/07/15.
  */
-public class ThumbnailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final String TAG = "THUMBNAILS_ADAPTER";
+public class SelectorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final String TAG = "SELECTOR_ADAPTER";
     private static int lastPosition = -1;
-    private ThumbnailCallback thumbnailCallback;
-    private List<ThumbnailItem> dataSet;
+    private SelectorCallback selectorCallback;
+    private List<SelectorItem> dataSet;
 
-    public ThumbnailsAdapter(List<ThumbnailItem> dataSet, ThumbnailCallback thumbnailCallback) {
+    public SelectorAdapter(List<SelectorItem> dataSet, SelectorCallback selectorCallback) {
         Log.v(TAG, "Thumbnails Adapter has " + dataSet.size() + " items");
         this.dataSet = dataSet;
-        this.thumbnailCallback = thumbnailCallback;
+        this.selectorCallback = selectorCallback;
     }
 
 
@@ -31,23 +34,22 @@ public class ThumbnailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         Log.v(TAG, "On Create View Holder Called");
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.list_thumbnail_item, viewGroup, false);
-        return new ThumbnailsViewHolder(itemView);
+                inflate(R.layout.list_selector_item, viewGroup, false);
+        return new SelectorsViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int i) {
-        final ThumbnailItem thumbnailItem = dataSet.get(i);
+        final SelectorItem selectorItem = dataSet.get(i);
         Log.v(TAG, "On Bind View Called");
-        ThumbnailsViewHolder thumbnailsViewHolder = (ThumbnailsViewHolder) holder;
-        thumbnailsViewHolder.thumbnail.setImageBitmap(thumbnailItem.image);
-        thumbnailsViewHolder.thumbnail.setScaleType(ImageView.ScaleType.FIT_START);
-        setAnimation(thumbnailsViewHolder.thumbnail, i);
-        thumbnailsViewHolder.thumbnail.setOnClickListener(new View.OnClickListener() {
+        SelectorsViewHolder selectorsViewHolder = (SelectorsViewHolder) holder;
+        selectorsViewHolder.name.setText(selectorItem.name);
+        setAnimation(selectorsViewHolder.name, i);
+        selectorsViewHolder.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (lastPosition != i) {
-                    thumbnailCallback.onThumbnailClick(thumbnailItem.filter);
+                    selectorCallback.onSelectorClick(selectorItem.filter);
                     lastPosition = i;
                 }
             }
@@ -68,12 +70,12 @@ public class ThumbnailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return dataSet.size();
     }
 
-    public static class ThumbnailsViewHolder extends RecyclerView.ViewHolder {
-        public ImageView thumbnail;
+    public static class SelectorsViewHolder extends RecyclerView.ViewHolder {
+        public TextView name;
 
-        public ThumbnailsViewHolder(View v) {
+        public SelectorsViewHolder(View v) {
             super(v);
-            this.thumbnail = (ImageView) v.findViewById(R.id.thumbnail);
+            this.name = (TextView) v.findViewById(R.id.selector);
         }
     }
 }

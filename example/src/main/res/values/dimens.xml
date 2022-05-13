@@ -6,5 +6,7 @@
     <dimen name="recycler_size">100dp</dimen>
     <dimen name="thumbnail_horizontal_padding">8dp</dimen>
     <dimen name="thumbnail_vertical_padding">10dp</dimen>
+    <dimen name="selector_horizontal_padding">8dp</dimen>
+    <dimen name="selector_vertical_padding">5dp</dimen>
 
 </resources>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/thumb_background_color"
-    tools:context=".ui.home.FilterFragment">
+    tools:context=".ui.filters.FilterFragment">
 
     <com.leinardi.android.speeddial.SpeedDialOverlayLayout
         android:layout_width="match_parent"

@@ -1,7 +1,10 @@
-package com.example.filters;
+package com.example.filters.ui.filters.thumbnail;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+
+import com.example.filters.GeneralUtils;
+import com.example.filters.R;
 
 import java.util.ArrayList;
 import java.util.List;

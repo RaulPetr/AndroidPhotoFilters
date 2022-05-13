@@ -9,4 +9,6 @@
     <string name="title_notifications">Notifications</string>
     <string name="upload_a_new_photo">Upload a new photo</string>
     <string name="save_the_current_photo">Save the current photo</string>
+    <string name="edit_filter_text">Please choose a filter to edit values</string>
+    <string name="filter_selector">Filter</string>
 </resources>

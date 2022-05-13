@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.ImageView;
 
+import com.example.filters.ui.filters.thumbnail.ThumbnailCallback;
+import com.example.filters.ui.filters.thumbnail.ThumbnailItem;
+import com.example.filters.ui.filters.thumbnail.ThumbnailsAdapter;
+import com.example.filters.ui.filters.thumbnail.ThumbnailsManager;
 import com.zomato.photofilters.SampleFilters;
 import com.zomato.photofilters.imageprocessors.Filter;
 

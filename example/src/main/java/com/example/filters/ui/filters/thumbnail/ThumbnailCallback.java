@@ -1,4 +1,4 @@
-package com.example.filters;
+package com.example.filters.ui.filters.thumbnail;
 
 import com.zomato.photofilters.imageprocessors.Filter;
 

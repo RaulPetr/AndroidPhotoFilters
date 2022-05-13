@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_filters"
-        android:name="com.example.filters.ui.home.FilterFragment"
+        android:name="com.example.filters.ui.filters.FilterFragment"
         android:label="@string/title_filters"
         tools:layout="@layout/fragment_filters" />
 
     <fragment
         android:id="@+id/navigation_editing"
-        android:name="com.example.filters.ui.dashboard.EditFragment"
+        android:name="com.example.filters.ui.editor.EditFragment"
         android:label="@string/title_Editor"
         tools:layout="@layout/fragment_editing" />
 
