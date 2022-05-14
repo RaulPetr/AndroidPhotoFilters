@@ -44,12 +44,12 @@ public class ContrastSubFilter implements SubFilter {
 
     @Override
     public Integer getValue() {
-        return Math.round(MathFn.mapFloatExponential(contrast, 0, 10, 0, 100));
+        return Math.round(MathFn.mapFloat10to100(contrast));
     }
 
     @Override
     public void setValue(Integer value) {
-        this.contrast = MathFn.mapFloatExponential(value, 0, 100, 0, 10);
+        this.contrast = MathFn.mapFloat100to10(value);
     }
 
     /**

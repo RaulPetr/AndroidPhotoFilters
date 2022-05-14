@@ -11,8 +11,12 @@ public class MathFn {
         Log.d("mathlib", "map: " + value + " " + start1 + " " + stop1 + " " + start2 + " " + stop2 + " " + (start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1))));
         return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
     }
-    public static Float mapFloatExponential(float value, float start1, float stop1, float start2, float stop2) {
-        Log.d("mathlib", "map: " + value + " " + start1 + " " + stop1 + " " + start2 + " " + stop2 + " " + (start2 + (stop2 - start2) * ((float)Math.pow(value - start1, 2) / (float)Math.pow(stop1 - start1, 2))));
-        return start2 + (stop2 - start2) * ((float)Math.pow(value - start1, 2) / (float)Math.pow(stop1 - start1, 2));
+    public static Float mapFloat100to10(float value) {
+        Log.d("mathlib", "map10to100: " + value + " " + ((0.1)*Math.pow(1.0471, value)));
+        return (float)((0.1)*Math.pow(1.0471, value));
+    }
+    public static Float mapFloat10to100(float value) {
+        Log.d("mathlib", "map100to10: " + value + " " + (Math.log(value*10)/Math.log(1.0471)));
+        return (float)(Math.log(value*10)/Math.log(1.0471));
     }
 }

@@ -37,12 +37,12 @@ public class SaturationSubFilter implements SubFilter {
 
     @Override
     public Integer getValue() {
-        return Math.round(MathFn.mapFloat(level, 0, 10, 0, 100));
+        return Math.round(MathFn.mapFloat10to100(level));
     }
 
     @Override
     public void setValue(Integer value) {
-        this.level = MathFn.mapFloat(value, 0, 100, 0, 10);
+        this.level = MathFn.mapFloat100to10(value);
     }
 
     public void setLevel(float level) {
