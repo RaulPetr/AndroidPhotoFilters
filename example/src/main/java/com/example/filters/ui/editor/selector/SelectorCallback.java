@@ -8,5 +8,5 @@ import com.zomato.photofilters.imageprocessors.SubFilter;
  */
 public interface SelectorCallback {
 
-    void onSelectorClick(SubFilter filter);
+    void onSelectorClick(SelectorItem item);
 }

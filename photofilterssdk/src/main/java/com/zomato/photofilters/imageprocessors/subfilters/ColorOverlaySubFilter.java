@@ -51,4 +51,14 @@ public class ColorOverlaySubFilter implements SubFilter {
     public void setTag(Object tag) {
         ColorOverlaySubFilter.tag = (String) tag;
     }
+
+    @Override
+    public Integer getValue() {
+        return null;
+    }
+
+    @Override
+    public void setValue(Integer value) {
+
+    }
 }

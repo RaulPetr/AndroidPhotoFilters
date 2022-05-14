@@ -42,6 +42,9 @@ import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.zomato.photofilters.SampleFilters;
 import com.zomato.photofilters.imageprocessors.Filter;
+import com.zomato.photofilters.imageprocessors.subfilters.BlackAndWhiteSubfilter;
+import com.zomato.photofilters.imageprocessors.subfilters.GrayscaleSubfilter;
+import com.zomato.photofilters.imageprocessors.subfilters.NegativeSubfilter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -142,6 +145,9 @@ public class FilterFragment extends Fragment implements ThumbnailCallback {
                 ThumbnailItem t4 = new ThumbnailItem();
                 ThumbnailItem t5 = new ThumbnailItem();
                 ThumbnailItem t6 = new ThumbnailItem();
+                ThumbnailItem t7 = new ThumbnailItem();
+                ThumbnailItem t8 = new ThumbnailItem();
+                ThumbnailItem t9 = new ThumbnailItem();
 
                 t1.image = thumbImage;
                 t2.image = thumbImage;
@@ -149,6 +155,10 @@ public class FilterFragment extends Fragment implements ThumbnailCallback {
                 t4.image = thumbImage;
                 t5.image = thumbImage;
                 t6.image = thumbImage;
+                t7.image = thumbImage;
+                t8.image = thumbImage;
+                t9.image = thumbImage;
+
                 ThumbnailsManager.clearThumbs();
                 ThumbnailsManager.addThumb(t1); // Original Image
 
@@ -166,6 +176,18 @@ public class FilterFragment extends Fragment implements ThumbnailCallback {
 
                 t6.filter = SampleFilters.getNightWhisperFilter();
                 ThumbnailsManager.addThumb(t6);
+
+                t7.filter = new Filter();
+                t7.filter.addSubFilter(new GrayscaleSubfilter());
+                ThumbnailsManager.addThumb(t7);
+
+                t8.filter = new Filter();
+                t8.filter.addSubFilter(new NegativeSubfilter());
+                ThumbnailsManager.addThumb(t8);
+
+                t9.filter = new Filter();
+                t9.filter.addSubFilter(new BlackAndWhiteSubfilter(127));
+                ThumbnailsManager.addThumb(t9);
 
                 List<ThumbnailItem> thumbs = ThumbnailsManager.processThumbs(context);
 

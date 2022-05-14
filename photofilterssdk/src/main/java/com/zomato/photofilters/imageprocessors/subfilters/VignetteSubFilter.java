@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import com.zomato.photofilters.R;
+import com.zomato.photofilters.helpers.MathFn;
 import com.zomato.photofilters.imageprocessors.SubFilter;
 
 
@@ -54,6 +55,16 @@ public class VignetteSubFilter implements SubFilter {
     @Override
     public void setTag(Object tag) {
         VignetteSubFilter.tag = (String) tag;
+    }
+
+    @Override
+    public Integer getValue() {
+        return MathFn.map(alpha, 0, 255, 0, 100);
+    }
+
+    @Override
+    public void setValue(Integer value) {
+        this.alpha = MathFn.map(value, 0, 100, 0, 255);
     }
 
     /**

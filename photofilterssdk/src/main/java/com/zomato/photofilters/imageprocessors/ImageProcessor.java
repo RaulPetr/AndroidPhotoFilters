@@ -87,4 +87,37 @@ public final class ImageProcessor {
         return inputImage;
     }
 
+    public static Bitmap doNegative(Bitmap inputImage) {
+        int width = inputImage.getWidth();
+        int height = inputImage.getHeight();
+        int[] pixels = new int[width * height];
+
+        inputImage.getPixels(pixels, 0, width, 0, 0, width, height);
+        NativeImageProcessor.doNegative(pixels, width, height);
+        inputImage.setPixels(pixels, 0, width, 0, 0, width, height);
+        return inputImage;
+    }
+
+    public static Bitmap doGrayscale(Bitmap inputImage) {
+        int width = inputImage.getWidth();
+        int height = inputImage.getHeight();
+        int[] pixels = new int[width * height];
+
+        inputImage.getPixels(pixels, 0, width, 0, 0, width, height);
+        NativeImageProcessor.doGrayscale(pixels, width, height);
+        inputImage.setPixels(pixels, 0, width, 0, 0, width, height);
+        return inputImage;
+    }
+    public static Bitmap doBlackAndWhite(Bitmap inputImage, int threshold) {
+        int width = inputImage.getWidth();
+        int height = inputImage.getHeight();
+        int[] pixels = new int[width * height];
+
+        inputImage.getPixels(pixels, 0, width, 0, 0, width, height);
+        NativeImageProcessor.doBW(pixels, threshold, width, height);
+        inputImage.setPixels(pixels, 0, width, 0, 0, width, height);
+        return inputImage;
+    }
+
+
 }

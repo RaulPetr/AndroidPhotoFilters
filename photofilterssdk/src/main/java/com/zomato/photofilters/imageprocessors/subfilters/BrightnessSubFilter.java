@@ -1,6 +1,8 @@
 package com.zomato.photofilters.imageprocessors.subfilters;
 
 import android.graphics.Bitmap;
+
+import com.zomato.photofilters.helpers.MathFn;
 import com.zomato.photofilters.imageprocessors.ImageProcessor;
 import com.zomato.photofilters.imageprocessors.SubFilter;
 
@@ -36,6 +38,16 @@ public class BrightnessSubFilter implements SubFilter {
     @Override
     public void setTag(Object tag) {
         BrightnessSubFilter.tag = (String) tag;
+    }
+
+    @Override
+    public Integer getValue() {
+        return MathFn.map(brightness, -255, 255, 0, 100);
+    }
+
+    @Override
+    public void setValue(Integer value) {
+        this.setBrightness(MathFn.map(value, 0, 100, -255, 255));
     }
 
     public void setBrightness(int brightness) {

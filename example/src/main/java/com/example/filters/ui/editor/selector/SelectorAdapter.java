@@ -49,7 +49,7 @@ public class SelectorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             @Override
             public void onClick(View v) {
                 if (lastPosition != i) {
-                    selectorCallback.onSelectorClick(selectorItem.filter);
+                    selectorCallback.onSelectorClick(selectorItem);
                     lastPosition = i;
                 }
             }

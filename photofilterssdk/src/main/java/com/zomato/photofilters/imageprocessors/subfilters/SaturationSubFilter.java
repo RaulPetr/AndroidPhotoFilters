@@ -1,6 +1,8 @@
 package com.zomato.photofilters.imageprocessors.subfilters;
 
 import android.graphics.Bitmap;
+
+import com.zomato.photofilters.helpers.MathFn;
 import com.zomato.photofilters.imageprocessors.ImageProcessor;
 import com.zomato.photofilters.imageprocessors.SubFilter;
 
@@ -31,6 +33,16 @@ public class SaturationSubFilter implements SubFilter {
     @Override
     public void setTag(Object tag) {
         SaturationSubFilter.tag = (String) tag;
+    }
+
+    @Override
+    public Integer getValue() {
+        return Math.round(MathFn.mapFloat(level, 0, 10, 0, 100));
+    }
+
+    @Override
+    public void setValue(Integer value) {
+        this.level = MathFn.mapFloat(value, 0, 100, 0, 10);
     }
 
     public void setLevel(float level) {

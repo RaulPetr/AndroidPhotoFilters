@@ -10,13 +10,17 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +44,7 @@ import com.leinardi.android.speeddial.SpeedDialView;
 import com.zomato.photofilters.SampleFilters;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.imageprocessors.SubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.BlackAndWhiteSubfilter;
 import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubFilter;
@@ -48,6 +53,7 @@ import com.zomato.photofilters.imageprocessors.subfilters.VignetteSubFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EditFragment extends Fragment implements SelectorCallback {
 
@@ -62,6 +68,9 @@ public class EditFragment extends Fragment implements SelectorCallback {
     private EditFragment editFragment;
     private SpeedDialView speedDialView;
     private Bitmap image;
+    private TextView filterName;
+    private SeekBar seekBar;
+    private Filter filter;
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -76,6 +85,9 @@ public class EditFragment extends Fragment implements SelectorCallback {
         speedDialView = binding.speedDialEdit;
         imageView = binding.editImageview;
         selectorsView = (RecyclerView) binding.selectors;
+        filterName = binding.textViewEdit;
+        seekBar = binding.seekBar;
+        filter = new Filter();
         preferences = getContext().getSharedPreferences("ImageURI", Context.MODE_PRIVATE);
         editor = preferences.edit();
         inflateMenu(speedDialView, R.menu.speed_dial_menu, getContext());
@@ -94,7 +106,6 @@ public class EditFragment extends Fragment implements SelectorCallback {
             // Use Uri object instead of File to avoid storage permissions
             editor.putString("uri", uri.toString());
             editor.commit();
-            Toast.makeText(this.getContext(), "yo", Toast.LENGTH_SHORT).show();
             initUIWidgets();
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this.getContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
@@ -116,6 +127,12 @@ public class EditFragment extends Fragment implements SelectorCallback {
         }
 
         imageView.setImageBitmap(image);
+        seekBar.setMax(100);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            seekBar.setProgress(50, true);
+        } else {
+            seekBar.setProgress(50);
+        }
         initHorizontalList();
     }
 
@@ -138,15 +155,22 @@ public class EditFragment extends Fragment implements SelectorCallback {
                 List<SelectorItem> selectors = new ArrayList<>();
 
 
-                SelectorItem t1 = new SelectorItem("Brightness", new BrightnessSubFilter(0));
-                SelectorItem t2 = new SelectorItem("Saturation", new SaturationSubFilter(1));
-                SelectorItem t3 = new SelectorItem("Contrast", new ContrastSubFilter(1));
-                SelectorItem t4 = new SelectorItem("Vignette", new VignetteSubFilter(getContext(), 0));
+                SelectorItem t1 = new SelectorItem("Brightness", new BrightnessSubFilter(0), -255, 255);
+                SelectorItem t2 = new SelectorItem("Saturation", new SaturationSubFilter(1), 0, 10);
+                SelectorItem t3 = new SelectorItem("Contrast", new ContrastSubFilter(1), 0, 10);
+                SelectorItem t4 = new SelectorItem("Vignette", new VignetteSubFilter(getContext(), 0), 0, 255);
+                SelectorItem t5 = new SelectorItem("Black\n &\n White", new BlackAndWhiteSubfilter(256), 0, 255);
 
                 selectors.add(t1);
                 selectors.add(t2);
                 selectors.add(t3);
                 selectors.add(t4);
+                selectors.add(t5);
+
+                selectors.stream().forEach(selector -> {
+                    selector.filter.setTag(selector.name);
+                    filter.addSubFilter(selector.filter);
+                });
 
                 SelectorAdapter adapter = new SelectorAdapter(selectors, (SelectorCallback) editFragment);
                 selectorsView.setAdapter(adapter);
@@ -157,8 +181,33 @@ public class EditFragment extends Fragment implements SelectorCallback {
     }
 
     @Override
-    public void onSelectorClick(SubFilter filter) {
+    public void onSelectorClick(SelectorItem item) {
         //set the current selector
+        filterName.setText("Adjust " + item.name);
+        SubFilter current = filter.getSubFilterByTag(item.name);
+        seekBar.setProgress(current.getValue());
+        Log.d(TAG, filter.toString());
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            boolean tracking = false;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser && !tracking) {
+                    current.setValue(progress);
+                    imageView.setImageBitmap(filter.processFilter(image.copy(Bitmap.Config.ARGB_8888, true)));
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                tracking = true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                tracking = false;
+                onProgressChanged(seekBar, seekBar.getProgress(), true);
+            }
+        });
     }
 
 

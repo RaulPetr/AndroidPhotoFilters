@@ -21,4 +21,10 @@ public final class NativeImageProcessor {
                                               int width, int height);
 
     public static native int[] doSaturation(int[] pixels, float level, int width, int height);
+
+    public static native int[] doNegative(int[] pixels, int width, int height);
+
+    public static native int[] doGrayscale(int[] pixels, int width, int height);
+
+    public static native int[] doBW(int[] pixels, int treshold, int width, int height);
 }

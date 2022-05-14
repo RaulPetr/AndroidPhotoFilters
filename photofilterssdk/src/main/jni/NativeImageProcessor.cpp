@@ -5,7 +5,8 @@
 
 extern "C" {
 
-static void HSLtoRGB_Subfunction(unsigned int &c, const float &temp1, const float &temp2, const float &temp3) {
+static void
+HSLtoRGB_Subfunction(unsigned int &c, const float &temp1, const float &temp2, const float &temp3) {
     if ((temp3 * 6) < 1)
         c = (unsigned int) ((temp2 + (temp1 - temp2) * 6 * temp3) * 100);
     else if ((temp3 * 2) < 1)
@@ -68,12 +69,10 @@ void saturation(int *pixels, float level, int width, int height) {
         if (max_color == min_color) {
             S = 0;
             H = 0;
-        }
-        else {
+        } else {
             if (L < .50) {
                 S = (max_color - min_color) / (max_color + min_color);
-            }
-            else {
+            } else {
                 S = (max_color - min_color) / (2 - max_color - min_color);
             }
             if (max_color == r_percent) {
@@ -95,8 +94,7 @@ void saturation(int *pixels, float level, int width, int height) {
         S *= level;
         if (S > 100) {
             S = 100;
-        }
-        else if (S < 0) {
+        } else if (S < 0) {
             S = 0;
         }
 
@@ -108,13 +106,11 @@ void saturation(int *pixels, float level, int width, int height) {
             r = L * 100;
             g = L * 100;
             b = L * 100;
-        }
-        else {
+        } else {
             temp1 = 0;
             if (L < .50) {
                 temp1 = L * (1 + S);
-            }
-            else {
+            } else {
                 temp1 = L + S - (L * S);
             }
 
@@ -154,13 +150,83 @@ void saturation(int *pixels, float level, int width, int height) {
         g = (unsigned int) ((((float) g) / 100) * 255);
         b = (unsigned int) ((((float) b) / 100) * 255);
 
-        pixels[i] = (pixels[i] & 0xFF000000) | (((int) r << 16) & 0x00FF0000) | (((int) g << 8) & 0x0000FF00) |
-                ((int) b & 0x000000FF);
+        pixels[i] = (pixels[i] & 0xFF000000) | (((int) r << 16) & 0x00FF0000) |
+                    (((int) g << 8) & 0x0000FF00) |
+                    ((int) b & 0x000000FF);
 
     }
 }
 
-static void colorOverlay(int *pixels, int depth, float red, float green, float blue, int width, int height) {
+static void grayscale(int *pixels, int width, int height) {
+
+    float red, green, blue, gray;
+    int R, G, B;
+
+    for (int i = 0; i < width * height; i++) {
+        red = (pixels[i] >> 16) & 0xFF;
+        green = (pixels[i] >> 8) & 0xFF;
+        blue = (pixels[i]) & 0xFF;
+
+        gray = (red + green + blue) / 3;
+        red = green = blue = gray;
+
+        R = (int) red;
+        G = (int) green;
+        B = (int) blue;
+        pixels[i] = (pixels[i] & 0xFF000000) | ((R << 16) & 0x00FF0000) | ((G << 8) & 0x0000FF00) |
+                    (B & 0x000000FF);
+    }
+}
+
+static void negative(int *pixels, int width, int height) {
+
+    float red, green, blue;
+    int R, G, B;
+
+    for (int i = 0; i < width * height; i++) {
+        red = (pixels[i] >> 16) & 0xFF;
+        green = (pixels[i] >> 8) & 0xFF;
+        blue = (pixels[i]) & 0xFF;
+
+        red = 255 - red;
+        green = 255 - green;
+        blue = 255 - blue;
+
+        R = (int) red;
+        G = (int) green;
+        B = (int) blue;
+        pixels[i] = (pixels[i] & 0xFF000000) | ((R << 16) & 0x00FF0000) | ((G << 8) & 0x0000FF00) |
+                    (B & 0x000000FF);
+    }
+}
+
+static void bw(int *pixels, int treshold, int width, int height) {
+
+    float red, green, blue, gray;
+    int R, G, B;
+
+    for (int i = 0; i < width * height; i++) {
+        red = (pixels[i] >> 16) & 0xFF;
+        green = (pixels[i] >> 8) & 0xFF;
+        blue = (pixels[i]) & 0xFF;
+
+        gray = (red + green + blue) / 3;
+        if(gray > treshold)
+            gray = 255;
+        else
+            gray = 0;
+        red = green = blue = gray;
+
+        R = (int) red;
+        G = (int) green;
+        B = (int) blue;
+        pixels[i] = (pixels[i] & 0xFF000000) | ((R << 16) & 0x00FF0000) | ((G << 8) & 0x0000FF00) |
+                    (B & 0x000000FF);
+    }
+}
+
+static void
+colorOverlay(int *pixels, int depth, float red, float green, float blue, int width, int height) {
 
     float R, G, B;
 
@@ -179,8 +245,9 @@ static void colorOverlay(int *pixels, int depth, float red, float green, float b
         B += (depth * blue);
         if (B > 255) { B = 255; }
 
-        pixels[i] = (pixels[i] & 0xFF000000) | (((int) R << 16) & 0x00FF0000) | (((int) G << 8) & 0x0000FF00) |
-                ((int) B & 0x000000FF);
+        pixels[i] = (pixels[i] & 0xFF000000) | (((int) R << 16) & 0x00FF0000) |
+                    (((int) G << 8) & 0x0000FF00) |
+                    ((int) B & 0x000000FF);
     }
 }
 
@@ -217,7 +284,8 @@ static void contrast(int width, int height, int *pixels, float value) {
         R = (int) red;
         G = (int) green;
         B = (int) blue;
-        pixels[i] = (pixels[i] & 0xFF000000) | ((R << 16) & 0x00FF0000) | ((G << 8) & 0x0000FF00) | (B & 0x000000FF);
+        pixels[i] = (pixels[i] & 0xFF000000) | ((R << 16) & 0x00FF0000) | ((G << 8) & 0x0000FF00) |
+                    (B & 0x000000FF);
     }
 }
 
@@ -250,7 +318,8 @@ static void brightness(int width, int height, int *pixels, int value) {
         else if (blue < 0)
             blue = 0;
 
-        pixels[i] = (pixels[i] & 0xFF000000) | ((red << 16) & 0x00FF0000) | ((green << 8) & 0x0000FF00) | (blue & 0x000000FF);
+        pixels[i] = (pixels[i] & 0xFF000000) | ((red << 16) & 0x00FF0000) |
+                    ((green << 8) & 0x0000FF00) | (blue & 0x000000FF);
     }
 }
 
@@ -295,7 +364,8 @@ static void applyRGBCurve(int width, int height, int *pixels, int *rgb) {
 
     for (int i = 0; i < width * height; i++) {
         pixels[i] =
-                (0xFF000000 & pixels[i]) | (R[(pixels[i] >> 16) & 0xFF]) | (G[(pixels[i] >> 8) & 0xFF]) | (B[pixels[i] & 0xFF]);
+                (0xFF000000 & pixels[i]) | (R[(pixels[i] >> 16) & 0xFF]) |
+                (G[(pixels[i] >> 8) & 0xFF]) | (B[pixels[i] & 0xFF]);
     }
 
 }
@@ -322,8 +392,10 @@ static inline void releaseArray(JNIEnv *env, jintArray array1, jint *array2) {
 JNIEXPORT jintArray
 Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_applyRGBCurve(JNIEnv *env,
                                                                                 jclass thiz,
-                                                                                jintArray pixels, jintArray rgb,
-                                                                                jint width, jint height) {
+                                                                                jintArray pixels,
+                                                                                jintArray rgb,
+                                                                                jint width,
+                                                                                jint height) {
     jint *pixelsBuff = getPointerArray(env, pixels);
     jint *RGBBuff = getPointerArray(env, rgb);
     applyRGBCurve(width, height, pixelsBuff, RGBBuff);
@@ -336,9 +408,12 @@ Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_applyRGBCurve(
 JNIEXPORT jintArray
 Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_applyChannelCurves(JNIEnv *env,
                                                                                      jclass thiz,
-                                                                                     jintArray pixels, jintArray r,
-                                                                                     jintArray g, jintArray b,
-                                                                                     jint width, jint height) {
+                                                                                     jintArray pixels,
+                                                                                     jintArray r,
+                                                                                     jintArray g,
+                                                                                     jintArray b,
+                                                                                     jint width,
+                                                                                     jint height) {
     jint *pixelsBuff = getPointerArray(env, pixels);
     jint *RBuff = getPointerArray(env, r);
     jint *GBuff = getPointerArray(env, g);
@@ -355,7 +430,9 @@ Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_applyChannelCu
 JNIEXPORT jintArray
 Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doBrightness(JNIEnv *env,
                                                                                jclass thiz,
-                                                                               jintArray pixels, jint value, jint width,
+                                                                               jintArray pixels,
+                                                                               jint value,
+                                                                               jint width,
                                                                                jint height) {
     jint *pixelsBuff = getPointerArray(env, pixels);
     brightness(width, height, pixelsBuff, value);
@@ -367,7 +444,9 @@ Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doBrightness(J
 JNIEXPORT jintArray
 Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doContrast(JNIEnv *env,
                                                                              jclass thiz,
-                                                                             jintArray pixels, jfloat value, jint width,
+                                                                             jintArray pixels,
+                                                                             jfloat value,
+                                                                             jint width,
                                                                              jint height) {
     jint *pixelsBuff = getPointerArray(env, pixels);
     contrast(width, height, pixelsBuff, value);
@@ -379,9 +458,13 @@ Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doContrast(JNI
 JNIEXPORT jintArray
 Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doColorOverlay(JNIEnv *env,
                                                                                  jclass thiz,
-                                                                                 jintArray pixels, jint depth,
-                                                                                 jfloat red, jfloat green, jfloat blue,
-                                                                                 jint width, jint height) {
+                                                                                 jintArray pixels,
+                                                                                 jint depth,
+                                                                                 jfloat red,
+                                                                                 jfloat green,
+                                                                                 jfloat blue,
+                                                                                 jint width,
+                                                                                 jint height) {
     jint *pixelsBuff = getPointerArray(env, pixels);
     colorOverlay(pixelsBuff, depth, red, green, blue, width, height);
     jintArray result = jintToJintArray(env, width * height, pixelsBuff);
@@ -392,10 +475,52 @@ Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doColorOverlay
 JNIEXPORT jintArray
 Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doSaturation(JNIEnv *env,
                                                                                jclass thiz,
-                                                                               jintArray pixels, float level,
-                                                                               jint width, jint height) {
+                                                                               jintArray pixels,
+                                                                               float level,
+                                                                               jint width,
+                                                                               jint height) {
     jint *pixelsBuff = getPointerArray(env, pixels);
     saturation(pixelsBuff, level, width, height);
+    jintArray result = jintToJintArray(env, width * height, pixelsBuff);
+    releaseArray(env, pixels, pixelsBuff);
+    return result;
+}
+
+JNIEXPORT jintArray
+Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doGrayscale(JNIEnv *env,
+                                                                               jclass thiz,
+                                                                               jintArray pixels,
+                                                                               jint width,
+                                                                               jint height) {
+    jint *pixelsBuff = getPointerArray(env, pixels);
+    grayscale(pixelsBuff, width, height);
+    jintArray result = jintToJintArray(env, width * height, pixelsBuff);
+    releaseArray(env, pixels, pixelsBuff);
+    return result;
+}
+
+JNIEXPORT jintArray
+Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doNegative(JNIEnv *env,
+                                                                              jclass thiz,
+                                                                              jintArray pixels,
+                                                                              jint width,
+                                                                              jint height) {
+    jint *pixelsBuff = getPointerArray(env, pixels);
+    negative(pixelsBuff, width, height);
+    jintArray result = jintToJintArray(env, width * height, pixelsBuff);
+    releaseArray(env, pixels, pixelsBuff);
+    return result;
+}
+
+JNIEXPORT jintArray
+Java_com_zomato_photofilters_imageprocessors_NativeImageProcessor_doBW(JNIEnv *env,
+                                                                             jclass thiz,
+                                                                             jintArray pixels,
+                                                                             jint treshold,
+                                                                             jint width,
+                                                                             jint height) {
+    jint *pixelsBuff = getPointerArray(env, pixels);
+    bw(pixelsBuff, treshold, width, height);
     jintArray result = jintToJintArray(env, width * height, pixelsBuff);
     releaseArray(env, pixels, pixelsBuff);
     return result;

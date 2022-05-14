@@ -11,4 +11,8 @@ public interface SubFilter {
     Object getTag();
 
     void setTag(Object tag);
+
+    Integer getValue();
+
+    void setValue(Integer value);
 }

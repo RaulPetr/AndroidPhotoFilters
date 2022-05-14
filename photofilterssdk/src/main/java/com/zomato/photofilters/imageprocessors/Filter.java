@@ -126,4 +126,10 @@ public class Filter {
         return outputImage;
     }
 
+    @Override
+    public String toString() {
+        return "Filter{" +
+                "subFilters=" + subFilters +
+                '}';
+    }
 }

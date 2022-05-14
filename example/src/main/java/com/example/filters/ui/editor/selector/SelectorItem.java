@@ -9,9 +9,12 @@ import com.zomato.photofilters.imageprocessors.SubFilter;
 public class SelectorItem {
     public String name;
     public SubFilter filter;
+    public Integer minValue, maxValue;
 
-    public SelectorItem(String name, SubFilter filter) {
+    public SelectorItem(String name, SubFilter filter, Integer minValue, Integer maxValue) {
         this.name = name;
         this.filter = filter;
+        this.minValue = minValue;
+        this.maxValue = maxValue;
     }
 }

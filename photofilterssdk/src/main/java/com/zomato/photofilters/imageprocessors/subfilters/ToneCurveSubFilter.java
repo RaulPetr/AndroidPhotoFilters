@@ -110,4 +110,14 @@ public class ToneCurveSubFilter implements SubFilter {
     public void setTag(Object tag) {
         ToneCurveSubFilter.tag = (String) tag;
     }
+
+    @Override
+    public Integer getValue() {
+        return null;
+    }
+
+    @Override
+    public void setValue(Integer value) {
+
+    }
 }
