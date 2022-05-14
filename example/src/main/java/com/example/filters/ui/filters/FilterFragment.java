@@ -9,27 +9,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.filters.ui.ImageProvider;
 import com.example.filters.R;
 
 import com.example.filters.databinding.FragmentFiltersBinding;
@@ -38,7 +34,6 @@ import com.example.filters.ui.filters.thumbnail.ThumbnailItem;
 import com.example.filters.ui.filters.thumbnail.ThumbnailsAdapter;
 import com.example.filters.ui.filters.thumbnail.ThumbnailsManager;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.zomato.photofilters.SampleFilters;
 import com.zomato.photofilters.imageprocessors.Filter;
@@ -46,16 +41,10 @@ import com.zomato.photofilters.imageprocessors.subfilters.BlackAndWhiteSubfilter
 import com.zomato.photofilters.imageprocessors.subfilters.GrayscaleSubfilter;
 import com.zomato.photofilters.imageprocessors.subfilters.NegativeSubfilter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-public class FilterFragment extends Fragment implements ThumbnailCallback {
+public class FilterFragment extends ImageProvider implements ThumbnailCallback {
 
     static {
         System.loadLibrary("NativeImageProcessor");
@@ -84,7 +73,7 @@ public class FilterFragment extends Fragment implements ThumbnailCallback {
         preferences = getContext().getSharedPreferences("ImageURI", Context.MODE_PRIVATE);
         editor = preferences.edit();
         inflateMenu(speedDialView, R.menu.speed_dial_menu, getContext());
-        speedDialView.setOnActionSelectedListener(getListener(filterFragment, placeHolderImageView.getDrawingCache(), getContext()));
+        speedDialView.setOnActionSelectedListener(getListener(filterFragment, placeHolderImageView, getContext()));
 
         initUIWidgets();
         return root;
@@ -99,7 +88,6 @@ public class FilterFragment extends Fragment implements ThumbnailCallback {
             // Use Uri object instead of File to avoid storage permissions
             editor.putString("uri", uri.toString());
             editor.commit();
-            Toast.makeText(this.getContext(), "yo", Toast.LENGTH_SHORT).show();
             initUIWidgets();
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this.getContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
@@ -208,5 +196,11 @@ public class FilterFragment extends Fragment implements ThumbnailCallback {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public Bitmap getBitmap() {
+        BitmapDrawable drawable = (BitmapDrawable) placeHolderImageView.getDrawable();
+        return drawable.getBitmap();
     }
 }

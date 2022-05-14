@@ -12,11 +12,11 @@ public class MathFn {
         return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
     }
     public static Float mapFloat100to10(float value) {
-        Log.d("mathlib", "map10to100: " + value + " " + ((0.1)*Math.pow(1.0471, value)));
-        return (float)((0.1)*Math.pow(1.0471, value));
+        Log.d("mathlib", "map100to10: " + value + " " + (((0.1)*Math.pow(1.0471, value) - 0.1)));
+        return (float)(((0.1)*Math.pow(1.0471, value) - 0.1));
     }
     public static Float mapFloat10to100(float value) {
-        Log.d("mathlib", "map100to10: " + value + " " + (Math.log(value*10)/Math.log(1.0471)));
+        Log.d("mathlib", "map10to100: " + value + " " + (Math.log(value*10)/Math.log(1.0471)));
         return (float)(Math.log(value*10)/Math.log(1.0471));
     }
 }

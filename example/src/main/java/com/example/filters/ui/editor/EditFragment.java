@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,23 +26,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.filters.ui.ImageProvider;
 import com.example.filters.R;
 import com.example.filters.databinding.FragmentEditingBinding;
 import com.example.filters.ui.editor.selector.SelectorAdapter;
 import com.example.filters.ui.editor.selector.SelectorCallback;
 import com.example.filters.ui.editor.selector.SelectorItem;
-import com.example.filters.ui.filters.FilterFragment;
-import com.example.filters.ui.filters.thumbnail.ThumbnailCallback;
-import com.example.filters.ui.filters.thumbnail.ThumbnailItem;
-import com.example.filters.ui.filters.thumbnail.ThumbnailsAdapter;
-import com.example.filters.ui.filters.thumbnail.ThumbnailsManager;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.leinardi.android.speeddial.SpeedDialView;
-import com.zomato.photofilters.SampleFilters;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.imageprocessors.SubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.BlackAndWhiteSubfilter;
@@ -53,9 +48,8 @@ import com.zomato.photofilters.imageprocessors.subfilters.VignetteSubFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class EditFragment extends Fragment implements SelectorCallback {
+public class EditFragment extends ImageProvider implements SelectorCallback {
 
     static {
         System.loadLibrary("NativeImageProcessor");
@@ -91,7 +85,7 @@ public class EditFragment extends Fragment implements SelectorCallback {
         preferences = getContext().getSharedPreferences("ImageURI", Context.MODE_PRIVATE);
         editor = preferences.edit();
         inflateMenu(speedDialView, R.menu.speed_dial_menu, getContext());
-        speedDialView.setOnActionSelectedListener(getListener(editFragment, imageView.getDrawingCache(), getContext()));
+        speedDialView.setOnActionSelectedListener(getListener(editFragment, imageView, getContext()));
 
         initUIWidgets();
         return root;
@@ -215,5 +209,11 @@ public class EditFragment extends Fragment implements SelectorCallback {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public Bitmap getBitmap() {
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        return drawable.getBitmap();
     }
 }
